@@ -1,0 +1,29 @@
+<Window Icon="/InventoryApp;component/Assets/App.ico" x:Class="InventoryApp.Views.LoginWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Masuk - Inventaris Aset"
+        Height="440" Width="420"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize">
+
+    <Border Style="{StaticResource Card}" Margin="24">
+        <StackPanel>
+            <TextBlock Text="Inventaris Aset" Style="{StaticResource Heading}"/>
+            <TextBlock Text="Masuk untuk melihat dan mengubah data aset."
+                       Foreground="{StaticResource Muted}" Margin="0,4,0,8" TextWrapping="Wrap"/>
+
+            <TextBlock Text="Nama pengguna" Style="{StaticResource FieldLabel}"/>
+            <TextBox x:Name="UsernameBox"/>
+
+            <TextBlock Text="Kata sandi" Style="{StaticResource FieldLabel}"/>
+            <PasswordBox x:Name="PasswordBox" KeyDown="PasswordBox_KeyDown"/>
+
+            <TextBlock x:Name="ErrorText" Foreground="#B3261E" TextWrapping="Wrap"
+                       Margin="0,12,0,0" Visibility="Collapsed"/>
+
+            <Button x:Name="LoginButton" Content="Masuk" Style="{StaticResource PrimaryButton}"
+                    Margin="0,18,0,0" Click="LoginButton_Click" IsDefault="True"/>
+        </StackPanel>
+    </Border>
+</Window>
+

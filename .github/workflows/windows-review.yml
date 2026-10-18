@@ -1,0 +1,68 @@
+name: Windows review build
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Review version (for example 0.4.0-review.1)
+        required: true
+        default: 0.4.0-review.1
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Validate version
+        shell: pwsh
+        env:
+          REVIEW_VERSION: ${{ inputs.version }}
+        run: |
+          if ($env:REVIEW_VERSION -notmatch '^0\.4\.\d+-review\.\d+$') { throw 'Use a v0.4 review version.' }
+      - name: Restore and test isolated fixtures
+        shell: pwsh
+        run: |
+          dotnet restore InventoryApp.sln -r win-x64
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
+          dotnet run --project InventoryApp.Checks --no-restore -- artifacts/previews
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
+      - name: Publish portable Windows app
+        shell: pwsh
+        env:
+          REVIEW_VERSION: ${{ inputs.version }}
+        run: |
+          dotnet publish InventoryApp/InventoryApp.csproj -c Release -r win-x64 --self-contained true -p:Version=$env:REVIEW_VERSION -o artifacts/app
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
+          Copy-Item docs/REVIEW-0.4.md artifacts/app/READ-ME-FIRST.md
+          Compress-Archive artifacts/app/* artifacts/Inventori-HANA-$env:REVIEW_VERSION-win-x64.zip
+          Get-FileHash artifacts/*.zip -Algorithm SHA256 | ForEach-Object { "$($_.Hash)  $([IO.Path]::GetFileName($_.Path))" } | Set-Content artifacts/SHA256.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Inventori-HANA-${{ inputs.version }}
+          path: |
+            artifacts/*.zip
+            artifacts/SHA256.txt
+            artifacts/previews/
+  release:
+    needs: build
+    runs-on: windows-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: Inventori-HANA-${{ inputs.version }}
+          path: artifacts
+      - name: Publish review prerelease
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          REVIEW_VERSION: ${{ inputs.version }}
+          REVIEW_COMMIT: ${{ github.sha }}
+        run: |
+          gh release create "v$env:REVIEW_VERSION" artifacts/*.zip artifacts/SHA256.txt --target $env:REVIEW_COMMIT --prerelease --title "Inventori HANA $env:REVIEW_VERSION" --notes "Review build only. Read READ-ME-FIRST.md before testing. User acceptance and full live authentication/recovery validation remain required."
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
