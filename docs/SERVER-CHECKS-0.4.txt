@@ -17,3 +17,5 @@ All temporary users, assets and audit fixtures rolled back. No persistent test a
 Actual HTTP login and two-client persistence tests NOT run: temporary account creation was rejected by automatic approval review. This requires explicit user approval.
 Security advisor: one configuration warning remains, auth_leaked_password_protection disabled.
 https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection
+
+UPDATE: User approved temporary accounts. 13 live HTTP checks subsequently passed. Temporary cloud accounts and test records were removed and verified. See LIVE-HTTP-TESTS-0.4-review.1.txt for output.

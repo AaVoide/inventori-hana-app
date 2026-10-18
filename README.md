@@ -41,10 +41,11 @@ Cadangan otomatis dibuat setelah sesi berubah, ketika keluar/beralih akun dan pa
 - Pemulihan penuh server Supabase (termasuk Auth/identities dan Storage) belum diimplementasikan atau diuji. Cadangan cache bukan penggantinya. Jangan menganggap build ini memiliki disaster recovery penuh.
 - Pemeriksaan rilis mencoba GitHub saat membuka inventaris cloud. Repositori privat memerlukan akses GitHub di browser; pemeriksaan tanpa kredensial tidak dapat membaca rilis privat. Tombol **Rilis GitHub** membuka halaman rilis. Instalasi otomatis belum tersedia.
 - Workflow Windows disertakan untuk menghasilkan ZIP/prerelease melalui GitHub Actions, tetapi publikasi dan hasil Actions belum diverifikasi dalam build lokal ini.
-- Uji lokal mencakup retry/koneksi putus/konflik dan pemulihan antrean. Uji server dalam transaksi mencakup izin, signup-role tampering, duplikat, idempotensi dan konflik; fixture dibatalkan. Uji HTTP login dan persistensi dari dua klien nyata belum dijalankan: pembuatan akun uji memerlukan persetujuan.
+- Uji lokal mencakup retry/koneksi putus/konflik dan pemulihan antrean. Uji server dalam transaksi mencakup izin, signup-role tampering, duplikat, idempotensi dan konflik; fixture dibatalkan. Setelah persetujuan pengguna, 13 uji HTTP langsung berhasil: login Editor/Viewer, persistensi dari dua klien, penolakan write Viewer, konflik, refresh token, antrean offline, dan retry setelah commit tanpa acknowledgement. Dua akun sementara beserta tiga aset uji, sesi dan receipt dihapus setelah pengujian. Uji ini memakai dua klien pada komputer pengembangan; UAT di dua komputer fisik tetap diperlukan. Percobaan koneksi pertama timeout, lalu retry berhasil.
 - NuGet tidak dapat menjangkau umpan audit kerentanan pada lingkungan build (NU1900); build berhasil menggunakan dependensi yang tersedia. Ini bukan hasil audit dependensi bersih.
 - Email konfirmasi, pemulihan kata sandi melalui email, batas layanan gratis, dan pemeriksaan kata sandi bocor perlu pemeriksaan konfigurasi sebelum produksi. Adviser melaporkan pemeriksaan kata sandi bocor belum aktif.
 
 **Hubungi Admin** membuka email ke `ezragustinm@gmail.com` pada aplikasi email bawaan, tanpa mengirim otomatis.
 
 Laporkan langkah, hasil yang diharapkan, hasil aktual, serta indikator antrean ketika menemukan masalah. Jangan menyertakan kata sandi atau token.
+

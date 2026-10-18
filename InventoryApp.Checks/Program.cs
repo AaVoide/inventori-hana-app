@@ -40,6 +40,12 @@ internal static class Program
     {
         try
         {
+            if(args.FirstOrDefault()=="--cloud-live")
+            {
+                Configure(Path.GetFullPath(args[1]));
+                CloudLiveChecks.Run().GetAwaiter().GetResult();
+                Console.WriteLine($"SUCCESS: {_checks} live HTTP cloud checks.");return 0;
+            }
             if(args.FirstOrDefault()=="--preview-cloud")
             {
                 Configure(args[1]);var previewApp=new App();previewApp.InitializeComponent();previewApp.ShutdownMode=ShutdownMode.OnExplicitShutdown;

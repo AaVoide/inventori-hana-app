@@ -2,5 +2,5 @@
   "GitHubRepository": "AaVoide/inventori-hana-app",
   "PublishableKey": "sb_publishable_7X3qY4QFkNwxsk7tM0sliA_SfhQb9BT",
   "ProjectUrl": "https://vkzyeimylxnyrwhebqef.supabase.co",
-  "Status": "Three cloud migrations applied; review client integrated; live Auth testing pending approval"
+  "Status": "Cloud review client integrated; 13 live HTTP tests passed; temporary fixtures removed"
 }
