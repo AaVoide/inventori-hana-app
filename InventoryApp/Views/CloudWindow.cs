@@ -31,7 +31,7 @@ public sealed class CloudWindow:Window
     public CloudWindow()
     {
         _sync=new(_api,_store);
-        Title="Inventori HANA v0.4 · Tinjauan cloud";Width=1240;Height=820;MinWidth=960;MinHeight=620;
+        Title="Inventori HANA v0.4 · Versi uji";Width=1240;Height=820;MinWidth=960;MinHeight=620;
         WindowStartupLocation=WindowStartupLocation.CenterScreen;
         Icon=System.Windows.Media.Imaging.BitmapFrame.Create(new Uri("pack://application:,,,/InventoryApp;component/Assets/App.ico"));
         Content=_root;
@@ -49,7 +49,7 @@ public sealed class CloudWindow:Window
         Detach(_status);
         _root.Children.Clear();var p=new StackPanel{Width=500,HorizontalAlignment=HorizontalAlignment.Center,Margin=new Thickness(20)};
         _root.Children.Add(new ScrollViewer{Content=p});
-        Forms.Note(p,"Inventori HANA v0.4 · Build tinjauan").FontSize=26;
+        Forms.Note(p,"Inventori HANA v0.4 · Versi uji").FontSize=26;
         Forms.Note(p,"Cloud menyimpan inventaris bersama antar komputer. Masuk dengan email Supabase. Akun lokal lama tetap tersedia melalui Inventaris lokal.");
         var email=Forms.Field(p,"Email",new TextBox{Text=_api.Session?.Profile.Email??""});
         var password=Forms.Field(p,"Kata sandi",new PasswordBox());
@@ -94,6 +94,16 @@ public sealed class CloudWindow:Window
         actions.Children.Add(Button("Antrean / konflik",ShowQueue));
         actions.Children.Add(Button("Riwayat aset",async()=>{try{if(_selected is not null)ShowText("Riwayat server",await _api.AuditAsync(_selected.Id));}catch(Exception ex){_status.Text=ex.Message;}}));
         actions.Children.Add(Button("Kelola akun",ShowAccounts));
+        actions.Children.Add(Button("Log pemeliharaan",async()=>
+        {
+            try
+            {
+                if(_api.Session?.Profile.Role!="ADMIN")throw new UnauthorizedAccessException("Log pemeliharaan hanya untuk Admin.");
+                using var log=JsonDocument.Parse(await _api.MaintenanceLogAsync());
+                ShowText("Log pemeliharaan · waktu UTC",JsonSerializer.Serialize(log.RootElement,new JsonSerializerOptions{WriteIndented=true}));
+            }
+            catch(Exception ex){_status.Text=ex.Message;}
+        }));
         actions.Children.Add(Button("Transfer inventaris lokal",TransferLocal));
         actions.Children.Add(Button("Cadangan aman",Backup));
         actions.Children.Add(Button("Ekspor CSV",ExportCsv));
@@ -278,4 +288,3 @@ public sealed class CloudWindow:Window
     private static void ContactAdmin()=>System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo("mailto:ezragustinm@gmail.com?subject=Inventori%20HANA%20-%20Bantuan"){UseShellExecute=true});
     private void ShowText(string title,string text){var w=new Window{Owner=this};var p=Forms.Body(w,title,850,650);p.Children.Add(new TextBox{Text=text,IsReadOnly=true,TextWrapping=TextWrapping.Wrap,AcceptsReturn=true,VerticalScrollBarVisibility=ScrollBarVisibility.Auto});w.ShowDialog();}
 }
-

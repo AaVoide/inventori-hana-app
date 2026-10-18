@@ -21,6 +21,9 @@ internal static class CloudLiveChecks
     }
     public static async Task Run()
     {
+        if(!Guid.TryParse(Environment.GetEnvironmentVariable("HANA_MAINTENANCE_RUN"),out var runId))
+            throw new InvalidOperationException("Append a STARTED maintenance entry first and supply HANA_MAINTENANCE_RUN. See AGENTS.md.");
+        Console.WriteLine("Maintenance run: "+runId);
         var password=Environment.GetEnvironmentVariable("HANA_TEST_PASSWORD")??throw new InvalidOperationException("Test password environment missing");
         var editorEmail=Environment.GetEnvironmentVariable("HANA_TEST_EDITOR")!;
         var viewerEmail=Environment.GetEnvironmentVariable("HANA_TEST_VIEWER")!;

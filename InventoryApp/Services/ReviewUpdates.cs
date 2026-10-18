@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.Net.Http;
+using System.Reflection;
 
 namespace InventoryApp.Services;
 
@@ -17,7 +18,8 @@ public static class ReviewUpdates
         using var json=System.Text.Json.JsonDocument.Parse(await response.Content.ReadAsStringAsync());
         if(json.RootElement.GetArrayLength()==0)return "Belum ada rilis GitHub.";
         var latest=json.RootElement[0].GetProperty("tag_name").GetString();
-        return "Rilis GitHub terbaru: "+latest+". Build ini: v0.4.0-review.1. Buka Rilis GitHub untuk memeriksa.";
+        var current=typeof(ReviewUpdates).Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion.Split('+')[0]??"0.4-review";
+        return "Rilis GitHub terbaru: "+latest+". Build ini: v"+current+". Buka Rilis GitHub untuk memeriksa.";
     }
     public static void Open()=>Process.Start(new ProcessStartInfo(ReleasesUrl){UseShellExecute=true});
 }

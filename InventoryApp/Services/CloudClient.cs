@@ -158,6 +158,7 @@ public sealed class CloudClient : ICloudApi
         "rest/v1/hana_assets?select=*&revision=gt."+revision+"&order=revision.asc&limit=500",null));
     public async Task<List<CloudProfile>> AccountsAsync()=>CloudJson.Read<List<CloudProfile>>(await RequestAsync(HttpMethod.Get,"rest/v1/hana_profiles?select=*&order=email",null));
     public async Task<string> AuditAsync(Guid id)=>await RequestAsync(HttpMethod.Get,"rest/v1/hana_audit?asset_id=eq."+id+"&order=id.desc&limit=100",null);
+    public Task<string> MaintenanceLogAsync()=>RequestAsync(HttpMethod.Get,"rest/v1/hana_maintenance_log?select=*&order=id.desc&limit=100",null);
     public async Task LogoutAsync()
     {
         try{if(Session is not null)await RequestAsync(HttpMethod.Post,"auth/v1/logout?scope=local",null);}

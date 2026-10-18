@@ -9,7 +9,7 @@
     <RootNamespace>InventoryApp</RootNamespace>
     <AssemblyName>InventoryApp</AssemblyName>
     <ApplicationTitle>Inventaris Aset</ApplicationTitle>
-    <Version>0.4.0-review.1</Version>
+    <Version>0.4.0-review.2</Version>
     <ApplicationIcon>Assets\App.ico</ApplicationIcon>
   </PropertyGroup>
 

@@ -1,6 +1,6 @@
-# Inventori HANA 0.4.0-review.1
+# Inventori HANA 0.4.0-review.2
 
-Build tinjauan untuk uji UI/UX dan integrasi awal. Belum disetujui untuk produksi.
+Versi uji untuk pemeriksaan UI/UX dan integrasi awal. Belum disetujui untuk produksi.
 
 ## Mulai
 
@@ -9,6 +9,10 @@ Build tinjauan untuk uji UI/UX dan integrasi awal. Belum disetujui untuk produks
 3. Akun baru dapat memilih **Daftar sebagai Viewer**, lalu memverifikasi email. Admin mengubah peran di **Kelola akun**. Email konfirmasi tunduk pada konfigurasi dan batas pengiriman Supabase.
 4. Pilih **Tambah aset**, isi nama barang dan gedung, ruangan opsional, lalu **Simpan dan sinkron**. Kode permanen menggunakan UUID untuk menghindari benturan antar komputer.
 5. Periksa indikator antrean. Sinkron berjalan saat masuk/melanjutkan akun, setelah simpan, dan setiap 30 detik untuk mencoba kembali setelah koneksi pulih.
+
+## Log aktivitas dan pemeliharaan
+
+Riwayat aset mencatat perubahan inventaris, override duplikat, dan perubahan peran. Admin dapat membuka **Log pemeliharaan** untuk melihat persetujuan, hasil pengujian, jumlah data sementara, dan verifikasi pembersihan. Log pemeliharaan bersifat append-only dan hanya dapat dibaca Admin. Catatan pertama direkam setelah pengujian dan ditandai retrospektif; pengujian berikutnya wajib mencatat STARTED sebelum perubahan. Password/token tidak dicatat. Waktu pada log server ditampilkan sebagai UTC.
 
 ## Uji yang disarankan
 
@@ -48,4 +52,5 @@ Cadangan otomatis dibuat setelah sesi berubah, ketika keluar/beralih akun dan pa
 **Hubungi Admin** membuka email ke `ezragustinm@gmail.com` pada aplikasi email bawaan, tanpa mengirim otomatis.
 
 Laporkan langkah, hasil yang diharapkan, hasil aktual, serta indikator antrean ketika menemukan masalah. Jangan menyertakan kata sandi atau token.
+
 

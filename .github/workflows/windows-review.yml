@@ -3,9 +3,9 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: Review version (for example 0.4.0-review.1)
+        description: Review version (for example 0.4.0-review.2)
         required: true
-        default: 0.4.0-review.1
+        default: 0.4.0-review.2
 permissions:
   contents: read
 jobs:
@@ -66,3 +66,4 @@ jobs:
         run: |
           gh release create "v$env:REVIEW_VERSION" artifacts/*.zip artifacts/SHA256.txt --target $env:REVIEW_COMMIT --prerelease --title "Inventori HANA $env:REVIEW_VERSION" --notes "Review build only. Read READ-ME-FIRST.md before testing. User acceptance and full live authentication/recovery validation remain required."
           if ($LASTEXITCODE) { exit $LASTEXITCODE }
+
