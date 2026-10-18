@@ -243,11 +243,15 @@ public sealed class CloudWindow:Window
         AutomaticBackup.SnapshotBeforeMigration(c);
         var source=c.ExecuteScalar<string>("SELECT setting_value FROM app_settings WHERE setting_key='cloud_source_id'");
         if(source is null){source=Guid.NewGuid().ToString();c.Execute("INSERT INTO app_settings(setting_key,setting_value) VALUES('cloud_source_id',@source)",new{source});}
-        var existing=_store.Assets().Select(a=>a.Code).ToHashSet(StringComparer.Ordinal);var added=0;
+        var existing=_store.Assets().ToDictionary(a=>a.Code,a=>a.Id,StringComparer.Ordinal);var added=0;
         foreach(var r in rows)
         {
-            if(existing.Contains(r.AssetCode))continue;
             var id=new Guid(SHA256.HashData(Encoding.UTF8.GetBytes(source+"/"+r.AssetCode)).AsSpan(0,16));
+            if(existing.TryGetValue(r.AssetCode,out var existingId))
+            {
+                if(existingId!=id)throw new InvalidOperationException("Kode "+r.AssetCode+" sudah ada dari sumber berbeda. Transfer dihentikan; periksa kedua aset tanpa mengubah kode permanennya. Antrean sebelumnya tetap tersimpan.");
+                continue;
+            }
             var history=c.Query("SELECT a.*,u.full_name AS original_actor FROM audit_entries a JOIN users u ON u.id=a.user_id WHERE entity_type='Asset' AND entity_id=@Id ORDER BY a.id",new{r.Id});
             _store.Queue(_api.Session.Profile.Id,new CloudAsset{Id=id,Code=r.AssetCode,Data=new(){Code=r.AssetCode,Name=r.ItemTypeName,Category=r.CategoryName,
                 Building=r.BuildingName!,Room=r.RoomName??"",Condition=r.ConditionName??"",Status=r.Status,AcquisitionYear=r.AcquisitionYear,Notes=r.Notes??"",LegacyCode=r.LegacyCode,
@@ -274,3 +278,4 @@ public sealed class CloudWindow:Window
     private static void ContactAdmin()=>System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo("mailto:ezragustinm@gmail.com?subject=Inventori%20HANA%20-%20Bantuan"){UseShellExecute=true});
     private void ShowText(string title,string text){var w=new Window{Owner=this};var p=Forms.Body(w,title,850,650);p.Children.Add(new TextBox{Text=text,IsReadOnly=true,TextWrapping=TextWrapping.Wrap,AcceptsReturn=true,VerticalScrollBarVisibility=ScrollBarVisibility.Auto});w.ShowDialog();}
 }
+
