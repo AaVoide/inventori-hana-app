@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "channel": "review",
+  "version": "0.4.0-review.13",
+  "package_url": "https://github.com/AaVoide/inventori-hana-app/releases/download/v0.4.0-review.13/Inventori-HANA-portable-0.4-review.13.zip",
+  "sha256": "070c28c9cc8d48d2cf7968ef8c282ff499dfa84f9b3548f6ddfde257ef4b73dc",
+  "release_notes": "Versi ulasan tersedia. Lihat panduan penggunaan di dalam aplikasi."
+}
