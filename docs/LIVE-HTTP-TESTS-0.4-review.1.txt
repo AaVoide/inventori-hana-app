@@ -1,0 +1,14 @@
+PASS: Live Supabase login obtains server Editor role
+PASS: Live asset save persists centrally
+PASS: Live retry returns identical operation receipt
+PASS: Second authenticated client reads persisted asset
+PASS: Live two-client stale edit returns conflict
+PASS: Live Viewer login uses server role
+PASS: Live Viewer write blocked by server
+PASS: Expired access token refreshes against live Auth
+PASS: Live-client disconnected mode retains encrypted queue
+PASS: Queue survives reopening after server commit with lost acknowledgement
+PASS: Reconnection confirms live server receipt and clears queue
+PASS: Second client sees exactly one asset after queued retry
+PASS: Live queued retry creates exactly one audit event
+SUCCESS: 13 live HTTP cloud checks.

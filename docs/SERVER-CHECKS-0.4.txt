@@ -1,0 +1,21 @@
+SERVER CHECKS — 2026-10-18
+13 checks passed in the connected Supabase project inside BEGIN/ROLLBACK.
+- Signup ignores user-editable role metadata; default Viewer
+- Viewer write rejected
+- Viewer self-promotion rejected
+- Direct authenticated table write rejected
+- Editor can save
+- Repeat operation returns same receipt
+- Repeated upload creates no duplicate audit
+- Stale edit returns conflict
+- Similar asset flagged
+- Deliberate duplicate override audited
+- Permanent code preserved
+- Last active Admin protected
+- Admin can promote another user
+All temporary users, assets and audit fixtures rolled back. No persistent test accounts created.
+Actual HTTP login and two-client persistence tests NOT run: temporary account creation was rejected by automatic approval review. This requires explicit user approval.
+Security advisor: one configuration warning remains, auth_leaked_password_protection disabled.
+https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection
+
+UPDATE: User approved temporary accounts. 13 live HTTP checks subsequently passed. Temporary cloud accounts and test records were removed and verified. See LIVE-HTTP-TESTS-0.4-review.1.txt for output.

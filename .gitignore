@@ -1,0 +1,28 @@
+## Build and test results
+bin/
+obj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+## Local database and backups
+*.db
+*.db-shm
+*.db-wal
+backups/
+
+## Visual Studio / Rider / VSCode
+.vs/
+.idea/
+.vscode/
+.packages/
+.check-data/
+*.db.key
+*.hana
+*.encrypted-before-*
+*.restoring-*
+*.encrypting-*
+*.hanaz
+*.protected
+*.writing
